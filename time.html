@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewpoint" content="initial-scale=1.0, width=device-width">
+    <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900' rel='stylesheet' type='text/css'>
+    <style>
+        * {
+            box-sizing: border-box;
+            outlinex:1px solid black;
+        }
+        body{
+          font-family: 'Playfair Display', serif;
+          margin:0;
+          overflow:hidden;
+        }
+
+        a{
+          color:black;
+          text-decoration:none;
+        }
+
+        #curtime{
+          width:400px;
+          height:32px;
+          text-align:center;
+          position:absolute;
+          right:20px;
+          font-size:1rem;
+          font-weight:bold;
+          line-height:2rem;
+          top:50%;
+          margin-top:-16px;
+          left:400px;
+          margin-left:-200px;
+        }
+
+        #hou{
+          font-size:0.8rem;
+          font-weight:700;
+        }
+        #min{
+          font-size:0.8rem;
+        }
+        #sec{
+          font-size:0.5rem;
+        }
+        #dat{
+          font-size:1.1rem;
+        }
+        #mon{
+          font-size:2rem;
+          font-weight:900;
+        }
+        #dat2{
+          font-size:1.1rem;
+        }
+        #mon2{
+          font-size:2rem;
+          font-weight:900;
+        }
+
+
+        #sec,
+        #min,
+        #hou,
+        #dat,
+        #mon,
+        #day,
+        #mon2,
+        #dat2 {
+            top:50%;
+            margin-top:-400px;
+            position: absolute;
+            width: 800px;
+            height: 800px;
+        }
+
+        #sec > div,
+        #min > div,
+        #hou > div,
+        #dat > div,
+        #mon > div,
+        #day > div,
+        #mon2 > div,
+        #dat2 > div {
+            position: absolute;
+            width: 2rem;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+        }
+        #sign{
+          position:absolute;
+          top:50%;
+          margin-top:-360px;
+          left:395px;;
+          width: 0;
+          height: 0;
+          border-top: 10px solid #000;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+        }
+        #watch{
+          position:absolute;
+          width:800px;
+          height:800px;
+          top:50%;
+          margin-top:-400px;
+          left:50%;;
+          margin-left:-400px;
+        }
+        #header{
+          display:block;
+          list-style:none;
+          position:absolute;
+          width:800px;
+          height:800px;
+          top:50%;
+          margin-top:-400px;
+          left:50%;;
+          margin-left:-400px;
+          transition: all 1s;
+          z-index:3;
+        }
+        #header li{
+          display:block;
+          position:absolute;
+          width:100px;
+          height:2rem;
+          text-align:center;
+          opacity:0.5;
+          font-size:0.9rem;
+          z-index:3;
+        }
+        #header li:hover{
+          opacity:1;
+        }
+
+
+
+    </style>
+    <title>watch</title>
+</head>
+
+<body>
+  <ol id="header">
+  </ol>
+  <div id="watch">
+    <div id="curtime"></div>
+  <div id="sign">
+  </div>
+    <div id="sec">
+    </div>
+    <div id="min">
+    </div>
+    <div id="hou">
+    </div>
+    <div id="dat">
+    </div>
+    <div id="mon">
+    </div>
+    <div id="mon2"></div>
+    <div id="dat2"></div>
+    <div id="day"></div>
+  </div>
+
+    <script>
+
+    function rotatelist(r){
+      var head = document.getElementById('header');
+      head.style.transform = 'rotate(' + -((r/20)*360) +'deg)';
+
+      bre();
+      main(r);
+    }
+
+    function bre(){
+
+      var header = document.getElementById("header");
+      var curtime = document.getElementById("curtime");
+      var sec = document.getElementById("sec");
+      var min = document.getElementById("min");
+      var hou = document.getElementById("hou");
+      var dat = document.getElementById("dat");
+      var mon = document.getElementById("mon");
+      var day = document.getElementById("day");
+
+        while ( header.hasChildNodes() )
+        {
+             header.removeChild( header.firstChild );
+        }
+        while ( header.hasAttribute("style") )
+        {
+             header.removeAttribute("style");
+        }
+
+        while ( curtime.hasChildNodes() )
+        {
+             curtime.removeChild( curtime.firstChild );
+        }
+        while ( curtime.hasAttribute("style") )
+        {
+             curtime.removeAttribute("style");
+        }
+
+        while ( sec.hasChildNodes() )
+        {
+             sec.removeChild( sec.firstChild );
+        }
+        while ( sec.hasAttribute("style") )
+        {
+             sec.removeAttribute("style");
+        }
+
+        while ( min.hasChildNodes() )
+        {
+             min.removeChild( min.firstChild );
+        }
+        while ( min.hasAttribute("style") )
+        {
+             min.removeAttribute("style");
+        }
+
+        while ( hou.hasChildNodes() )
+        {
+             hou.removeChild( hou.firstChild );
+        }
+        while ( hou.hasAttribute("style") )
+        {
+             hou.removeAttribute("style");
+        }
+
+        while ( dat.hasChildNodes() )
+        {
+             dat.removeChild( dat.firstChild );
+        }
+        while ( dat.hasAttribute("style") )
+        {
+             dat.removeAttribute("style");
+        }
+
+        while ( mon.hasChildNodes() )
+        {
+             mon.removeChild( mon.firstChild );
+        }
+        while ( mon.hasAttribute("style") )
+        {
+             mon.removeAttribute("style");
+        }
+
+        while ( day.hasChildNodes() )
+        {
+             day.removeChild( day.firstChild );
+        }
+        while ( day.hasAttribute("style") )
+        {
+             day.removeAttribute("style");
+        }
+
+        while ( dat2.hasChildNodes() )
+        {
+             dat2.removeChild( dat2.firstChild );
+        }
+        while ( dat2.hasAttribute("style") )
+        {
+             dat2.removeAttribute("style");
+        }
+
+        while ( mon2.hasChildNodes() )
+        {
+             mon2.removeChild( mon2.firstChild );
+        }
+        while ( mon2.hasAttribute("style") )
+        {
+             mon2.removeAttribute("style");
+        }
+
+    }
+
+    function main(z){
+
+        function lastdate(m) {
+            var d = new Date();
+            d.setFullYear(2016);
+            d.setMonth(m);
+            d.setDate(0);
+            return d.getDate();
+        }
+
+        var curMonth = z;
+        var Lastdate = lastdate(curMonth);
+
+        if(curMonth == 0){
+
+          var curenttime = document.getElementById('curtime');
+          curenttime.style.display = "block";
+
+          function getLastDate() {
+              var now = new Date();
+              now.setMonth(now.getMonth() + 1);
+              now.setDate(0);
+              return now.getDate();
+          }
+          var LastDat = getLastDate();
+
+          var date = new Date();
+          var curSec = date.getSeconds();
+          var curMsec = date.getMilliseconds();
+          var curMin = date.getMinutes();
+          var curHou = date.getHours();
+          var curDat = date.getDate();
+          var curMon = date.getMonth()+1;
+          var nowSec = curSec + curMsec / 1000 - 0.8;
+          var nowMin = curMin + nowSec / 60;
+          var nowHou = curHou + nowMin / 60;
+          var nowDat = curDat + nowHou / 24;
+          var nowMon = curMon + nowDat / LastDat;
+
+
+          init(document.getElementById("sec"), 60, nowSec, 325),1000;
+          init(document.getElementById("min"), 60, nowMin, 305);
+          init(document.getElementById("hou"), 24, nowHou, 280);
+          init(document.getElementById("dat"), LastDat, nowDat, 240);
+          init(document.getElementById("mon"), 12, nowMon, 210);
+
+          animate();
+          setInterval("intime()",1000);
+          addlist(400, curMonth);
+
+          function addlist(r, m) {
+            var month = new Array('Current Time', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+            var head = document.getElementById("header");
+            for(i=0; i<13; i++){
+              var child = document.createElement('li');
+              child.innerHTML = month[i];
+              head.appendChild(child);
+
+              var x = 400 + r*Math.cos(Math.PI*2*(i/20) - 0.5*Math.PI);
+              var y = 400 + r*Math.sin(Math.PI*2*(i/20) - 0.5*Math.PI);
+
+              child.style.left = x + 'px';
+              child.style.top = y + 'px';
+
+              child.style.transform = 'translate(-50px, -1rem) rotate('+ ((i / 20) * 360) +'deg)';
+              if(i === m){
+                child.style.opacity = 1;
+                child.style.fontWeight = 700;
+              }
+              }
+              head.style.transform = 'rotate(' + -((m/20)*360) + 'deg)';
+          }
+
+
+          function init(container, n, now, r) {
+              for (var i = 0; i < n; i++) {
+                  var child = document.createElement('div');
+                  child.innerHTML = i === 0 ? n : i;
+                  container.appendChild(child);
+
+                  var x = 400 + r*Math.cos(Math.PI*2*(i/n) - 0.5*Math.PI);
+                  var y = 400 + r*Math.sin(Math.PI*2*(i/n)- 0.5*Math.PI);
+
+                  child.style.left = x +'px';
+                  child.style.top = y + 'px';
+                  child.style.transform = 'translate(-1rem, -1rem) rotate('+ ((i / n) * 360) +'deg)';
+
+              }
+          }
+
+          function update(container, now) {
+              var n = container.querySelectorAll('div').length;
+              container.style.transform = 'rotate(' + (-now / n * 360) + 'deg)';
+          }
+
+          function animate() {
+            var date = new Date();
+            var curSec = date.getSeconds();
+            var curMsec = date.getMilliseconds();
+            var curMin = date.getMinutes();
+            var curHou = date.getHours();
+            var curDat = date.getDate();
+            var curMon = date.getMonth()+1;
+            var nowSec = curSec + curMsec / 1000 - 0.8;
+            var nowMin = curMin + nowSec / 60;
+            var nowHou = curHou + nowMin / 60;
+            var nowDat = curDat + nowHou / 24;
+            var nowMon = curMon + nowDat / LastDat;
+
+              update(document.getElementById("sec"), nowSec);
+              update(document.getElementById("min"), nowMin);
+              update(document.getElementById("hou"), nowHou);
+              update(document.getElementById("dat"), nowDat);
+              update(document.getElementById("mon"), nowMon);
+
+              window.requestAnimationFrame(animate);
+          }
+        }
+
+        else{
+
+          var curenttime = document.getElementById('curtime');
+          curenttime.style.display = "none";
+
+
+        initDay(document.getElementById("dat2"), document.getElementById("day"), Lastdate, 300, curMonth);
+        initMonth(document.getElementById("mon2"), 12, 230, curMonth);
+        addlist(400, curMonth);
+
+        function addlist(r, m) {
+          var month = new Array('Current Time', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+          var head = document.getElementById("header");
+          for(i=0; i<13; i++){
+            var child = document.createElement('li');
+            child.innerHTML = '<a href="#" onClick="rotatelist(\'' + i + '\')">' + month[i]; + '</a>'
+            head.appendChild(child);
+
+            var x = 400 + r*Math.cos(Math.PI*2*(i/20) - 0.5*Math.PI);
+            var y = 400 + r*Math.sin(Math.PI*2*(i/20) - 0.5*Math.PI);
+
+            child.style.left = x + 'px';
+            child.style.top = y + 'px';
+
+            child.style.transform = 'translate(-50px, -1rem) rotate('+ ((i / 20) * 360) +'deg)';
+            }
+            head.style.transform = 'rotate(' + -((m/20)*360) + 'deg)';
+        }
+
+
+        function initDay(container, container2, n, r, m) {
+            for (var i = 0; i < n; i++) {
+                var week = new Array ('S','M','T','W','T','F','S')
+                var date = new Date("2016-" + m);
+                date.setDate(i+1);
+                var day = date.getDay();
+                var child = document.createElement('div');
+                var child2 = document.createElement('div');
+                child.innerHTML = i+1;
+                child2.innerHTML = week[day];
+                container.appendChild(child);
+                container2.appendChild(child2);
+
+                var r2 = r-32;
+
+                var x = 400 + r*Math.cos(Math.PI*2*(i/n) - 0.5*Math.PI);
+                var y = 400 + r*Math.sin(Math.PI*2*(i/n)- 0.5*Math.PI);
+
+                var x2 = 400 + r2*Math.cos(Math.PI*2*(i/n) - 0.5*Math.PI);
+                var y2 = 400 + r2*Math.sin(Math.PI*2*(i/n)- 0.5*Math.PI);
+
+                child.style.left = x +'px';
+                child.style.top = y + 'px';
+
+                child2.style.left = x2 +'px';
+                child2.style.top = y2 + 'px';
+
+                child2.style.fontSize = "0.8rem";
+
+                if(Math.cos(Math.PI*2*(i/n) + Math.PI*2*(m/12)) > 0){
+                child.style.transform = 'translate(-1rem, -1rem) rotate('+ ((i / n) * 360) +'deg)';
+                child2.style.transform = 'translate(-1rem, -1rem) rotate('+ ((i / n) * 360) +'deg)';
+              }
+              else{
+                child.style.transform = 'translate(-1rem, -1rem) rotate('+ ((0.5+(i / n)) * 360) +'deg)';
+                child2.style.transform = 'translate(-1rem, -1rem) rotate('+ ((0.5+(i / n)) * 360) +'deg)';
+              }
+                container.style.transform = 'rotate('+ ((m / 12) * 360) +'deg)';
+                container2.style.transform = 'rotate('+ ((m / 12) * 360) +'deg)';
+
+                if(day == 6){
+                  child.style.color = "#0000dd";
+                  child2.style.color = "#0000dd";
+                }
+                else if(day == 0){
+                  child.style.color = "red";
+                  child2.style.color = "red";
+                }
+
+            }
+        }
+
+        function initMonth(container, n, r, m) {
+                var child = document.createElement('div');
+                var mon = m
+                  child.innerHTML = mon;
+                  container.appendChild(child);
+
+                var x = 400 + r*Math.cos(Math.PI*2*(m/n) - 0.5*Math.PI);
+                var y = 400 + r*Math.sin(Math.PI*2*(m/n)- 0.5*Math.PI);
+
+                child.style.left = x +'px';
+                child.style.top = y + 'px';
+                if(mon === 3 || mon === 9){
+                  child.style.transform = 'translate(-1rem, -1rem)';
+                }
+                else if(Math.cos(Math.PI*2*(m/n)) > 0){
+                  child.style.transform = 'translate(-1rem, -1rem) rotate('+ ((m / n) * 360) +'deg)';
+                }
+                else{
+                  child.style.transform = 'translate(-1rem, -1rem) rotate('+ ((0.5+(m / n)) * 360) +'deg)';
+                }
+        }
+        }
+      }
+
+      function intime(){
+
+        var date = new Date();
+        var curSec = date.getSeconds();
+        var curMsec = date.getMilliseconds();
+        var curMin = date.getMinutes();
+        var curHou = date.getHours();
+        var curMon = date.getMonth() + 1;
+        var curDat = date.getDate();
+        var curYea = date.getYear() + 1900;
+
+        var int = document.getElementById('curtime');
+        int.innerHTML = curYea + "&nbsp&nbsp&nbsp" + curMon + "/" + curDat + "&nbsp&nbsp&nbsp"
++ curHou + "&nbsp:&nbsp" + curMin + "&nbsp:&nbsp" + curSec;
+
+      }
+
+      main(0);
+
+    </script>
+</body>
+
+</html>
